@@ -1,0 +1,3 @@
+Server: db-lds.database.windows.net
+User: MultiSnakeAPI
+Password: e^GSGe8HT6j6m#UVghst
