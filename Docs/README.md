@@ -7,7 +7,7 @@
 
 <kbd>[<img src="Report/cover.png" alt="Report" width="250"/>](Report.pdf)</kbd>
 
-## SCM Plan
+<!-- ## SCM Plan
 
 <kbd>[<img src="SCM_Plan/cover.png" alt="SCM_Plan" width="250"/>](SCM_Plan.pdf)</kbd>
 
@@ -17,11 +17,11 @@
 
 ## User Stories
 
-<kbd>[<img src="User_Stories/cover.png" alt="User_Stories" width="250"/>](User_Stories.pdf)</kbd>
+<kbd>[<img src="User_Stories/cover.png" alt="User_Stories" width="250"/>](User_Stories.pdf)</kbd> -->
 
-## Mockups
+<!-- ## Mockups
 
-Go to [`Mockups`](Mockups).
+Go to [`Mockups`](Mockups). -->
 
 ## UML Diagrams
 
