@@ -1,7 +1,6 @@
-# Documents
+# :file_folder: Documents
 
 >This section is exclusively for documents. To view the full document click the images below.
-
 
 ## Report
 
