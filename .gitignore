@@ -1,7 +1,3 @@
-
-# Created by https://www.toptal.com/developers/gitignore/api/aspnetcore,angular,latex,csharp,visualstudiocode,jetbrains,rider,microsoftoffice
-# Edit at https://www.toptal.com/developers/gitignore?templates=aspnetcore,angular,latex,csharp,visualstudiocode,jetbrains,rider,microsoftoffice
-
 ### Angular ###
 ## Angular ##
 # compiled output
