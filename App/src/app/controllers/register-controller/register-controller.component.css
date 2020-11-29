@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Ewert&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gorditas&display=swap");
+
+.container {
+  height: 100vh;
+  background: url("../../../assets/global_background.png") no-repeat;
+  background-size: cover;
+}
+
+.register {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logo {
+  width: 40vw;
+  height: auto;
+}
+
+.register_form {
+  font-family: "Montserrat", sans-serif;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 6vh;
+}
+
+.textbox {
+  width: 350px;
+  overflow: hidden;
+  font-size: 25px;
+  padding: 10px 10px;
+  margin: 10px 0;
+  text-align: center;
+  color: #445023;
+  border: none;
+  border-radius: 50px;
+  background-color: #c4db81;
+  transition: all 0.3s ease 0s;
+  outline: none;
+  caret-color: transparent;
+}
+
+input:focus::placeholder {
+  opacity: 0.2;
+}
+
+::placeholder {
+  color: #445023;
+  opacity: 0.5;
+}
+
+button {
+  width: 250px;
+  font-family: "Gorditas", cursive;
+  font-size: 30px;
+  color: #dddddd;
+  background-color: #516613;
+  padding: 10px 10px;
+  margin: 20px 0;
+  margin-top: 5vh;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  outline: none;
+}
+
+button:hover {
+  background-color: #607a12;
+}
+
+.login {
+  font-size: 20px;
+  font-weight: bold;
+  color: #dddddd;
+  outline: none;
+}
+
+.login a {
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  color: #a80000;
+  text-decoration: none;
+}
+
+.login a:hover {
+  color: #d81313;
+}
