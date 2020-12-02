@@ -67,7 +67,7 @@ button {
   font-family: "Gorditas", cursive;
   font-size: 30px;
   color: #dddddd;
-  background-color: #516613;
+  background-color: #556b13;
   padding: 10px 10px;
   margin: 20px 0;
   margin-top: 5vh;
@@ -79,7 +79,11 @@ button {
 }
 
 button:hover {
-  background-color: #607a12;
+  background-color: #607917;
+}
+
+button:disabled {
+  background-color: #585858;
 }
 
 .register {
@@ -92,10 +96,17 @@ button:hover {
 .register a {
   transition: all 0.3s ease 0s;
   cursor: pointer;
-  color: #a80000;
+  color: #6e1212;
   text-decoration: none;
 }
 
 .register a:hover {
-  color: #d81313;
+  text-decoration: underline;
+}
+
+.error_message {
+  font-size: 20px;
+  font-weight: bold;
+  color: #b80000;
+  outline: none;
 }

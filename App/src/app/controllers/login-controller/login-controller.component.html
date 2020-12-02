@@ -2,10 +2,13 @@
   <div class="login">
     <img class="logo" src="../../../assets/multisnake_letter_logo_no_background_ultra_cropped.png" />
 
-    <form class="login_form" (submit)="onSubmit($event)">
-      <input [(ngModel)]="username" name="username" class="textbox" type="text" placeholder="Username" />
-      <input [(ngModel)]="password" name="password" class="textbox" type="password" placeholder="Password" />
-      <button name="login_button" type="submit">SIGN IN</button>
+    <form class="login_form" (submit)="onSubmit($event)" #loginForm="ngForm">
+      <input [(ngModel)]="username" name="username" class="textbox" type="text" placeholder="Username" required />
+      <input [(ngModel)]="password" name="password" class="textbox" type="password" placeholder="Password" required />
+      <div class="error_message" *ngIf="error">
+        {{error}}
+      </div>
+      <button type="submit" [disabled]="loginForm.form.invalid">SIGN IN</button>
       <!-- <a class="cta" href="/login"><button type="submit">SIGN IN</button></a> -->
       <div class="register">
         <span class="register_text">Don't have an account yet? </span>

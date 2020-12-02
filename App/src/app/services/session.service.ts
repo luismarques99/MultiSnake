@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import * as setup from './setup.json';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { User } from '../models/user';
 
-const API_URL = setup.API_URL;
+const API_URL = environment.apiUrl;
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -14,15 +20,35 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class SessionService {
-  constructor() { }
+  private currentUser: any;
 
-  login(username: String, password: String): void {
-    if (username != '' && password != '')
-      console.log(`Login: {${username}, ${password}}`);
-    else console.log('You need to enter the username and the password!');
+  constructor(private http: HttpClient) {
+    this.currentUser = localStorage.getItem('currentUser');
+    if (this.currentUser != null)
+      this.currentUser = JSON.parse(this.currentUser);
   }
 
-  me() { }
+  login(user: User): Observable<any> {
+    const request = this.http.post(
+      `${API_URL}/users/authenticate`,
+      user,
+      httpOptions
+    );
 
-  logout() { }
+    request.subscribe((user) => {
+      this.currentUser = user;
+      localStorage.setItem('currentUser', JSON.stringify(user));
+    });
+
+    return request;
+  }
+
+  me() {
+    return this.currentUser;
+  }
+
+  logout() {
+    this.currentUser = null;
+    localStorage.removeItem('currentUser');
+  }
 }

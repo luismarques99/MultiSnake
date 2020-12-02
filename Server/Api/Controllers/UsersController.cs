@@ -69,7 +69,7 @@ namespace Server.Api.Controllers
             catch (DuplicateUserException e)
             {
                 var message = e.Message;
-                return BadRequest(new {message = $"{message} is already in use"});
+                return BadRequest(new {message = $"{message} is already in use."});
             }
 
             _repository.SaveChanges();
@@ -101,7 +101,7 @@ namespace Server.Api.Controllers
             catch (DuplicateUserException e)
             {
                 var message = e.Message;
-                return BadRequest(new {message = $"{message} is already in use"});
+                return BadRequest(new {message = $"{message} is already in use."});
             }
 
             _repository.SaveChanges();
@@ -141,7 +141,7 @@ namespace Server.Api.Controllers
             catch (DuplicateUserException e)
             {
                 var message = e.Message;
-                return BadRequest(new {message = $"{message} is already in use"});
+                return BadRequest(new {message = $"{message} is already in use."});
             }
 
             _repository.SaveChanges();
@@ -169,7 +169,7 @@ namespace Server.Api.Controllers
         {
             var authenticateResponse = _repository.Authenticate(authenticateRequest);
 
-            if (authenticateResponse == null) return BadRequest(new {message = "Username or password is incorrect"});
+            if (authenticateResponse == null) return BadRequest(new {message = "Username or password is incorrect."});
 
             return Ok(authenticateResponse);
         }
