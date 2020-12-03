@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="register">
+    <img class="logo" src="../../../assets/multisnake_letter_logo_no_background_ultra_cropped.png" />
+
+    <form class="register_form" (submit)="onSubmit($event)" #registerForm="ngForm">
+      <input [(ngModel)]="username" name="username" class="textbox" type="text" placeholder="Username" required />
+      <input [(ngModel)]="email" name="email" class="textbox" type="email" placeholder="Email" required />
+      <input [(ngModel)]="password" name="password" class="textbox" type="password" placeholder="Password" required />
+      <div class="error_message" *ngIf="error">
+        {{error}}
+      </div>
+      <button type="submit" [disabled]="registerForm.form.invalid">REGISTER</button>
+      <!-- <a class="cta" href="/register"><button type="submit">REGISTER</button></a> -->
+      <div class="login">
+        <span class="login_text">Already have an account? </span>
+        <a routerLink="/login">Sign in</a>
+      </div>
+    </form>
+  </div>
+</div>
