@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Server.Api.Data.Users;
 using Server.Api.Dtos.Users;
+using Server.Api.Helpers;
 using Server.Api.Helpers.Exceptions;
 using Server.Api.Models;
 using bCrypt = BCrypt.Net.BCrypt;
@@ -36,7 +38,7 @@ namespace Server.Api.Controllers
 
             return Ok(_mapper.Map<IEnumerable<UserReadDto>>(users));
         }
-        
+
         // GET api/users/{id}
         [Authorize]
         [HttpGet("{id}", Name = "GetUserById")]
@@ -67,7 +69,7 @@ namespace Server.Api.Controllers
             catch (DuplicateUserException e)
             {
                 var message = e.Message;
-                return BadRequest(new {message = $"{message} is already in use"});
+                return BadRequest(new {message = $"{message} is already in use."});
             }
 
             _repository.SaveChanges();
@@ -78,12 +80,15 @@ namespace Server.Api.Controllers
         }
 
         // PUT api/users/{id}
+        [Authorize]
         [HttpPut("{id}")]
         public ActionResult UpdateUser(int id, UserUpdateDto userUpdateDto)
         {
             var user = _repository.GetUserById(id);
 
             if (user == null) return NotFound();
+            
+            if (!HttpContext.Items["User"].Equals(user)) return Unauthorized();
 
             userUpdateDto.Username = Regex.Replace(userUpdateDto.Username, @" ", "");
 
@@ -96,7 +101,7 @@ namespace Server.Api.Controllers
             catch (DuplicateUserException e)
             {
                 var message = e.Message;
-                return BadRequest(new {message = $"{message} is already in use"});
+                return BadRequest(new {message = $"{message} is already in use."});
             }
 
             _repository.SaveChanges();
@@ -105,12 +110,15 @@ namespace Server.Api.Controllers
         }
 
         // PATCH api/users/{id}
+        [Authorize]
         [HttpPatch("{id}")]
         public ActionResult PartialUpdateUser(int id, JsonPatchDocument<UserCreateDto> jsonPatchDocument)
         {
             var user = _repository.GetUserById(id);
 
             if (user == null) return NotFound();
+            
+            if (!HttpContext.Items["User"].Equals(user)) return Unauthorized();
 
             var userCreateDto = _mapper.Map<UserCreateDto>(user);
 
@@ -133,7 +141,7 @@ namespace Server.Api.Controllers
             catch (DuplicateUserException e)
             {
                 var message = e.Message;
-                return BadRequest(new {message = $"{message} is already in use"});
+                return BadRequest(new {message = $"{message} is already in use."});
             }
 
             _repository.SaveChanges();
@@ -142,18 +150,18 @@ namespace Server.Api.Controllers
         }
 
         // DELETE api/users/{id}
-        [HttpDelete("{id}")]
-        public ActionResult DeleteUser(int id)
-        {
-            var user = _repository.GetUserById(id);
-
-            if (user == null) return NotFound();
-
-            _repository.DeleteUser(user);
-            _repository.SaveChanges();
-
-            return NoContent();
-        }
+        // [HttpDelete("{id}")]
+        // public ActionResult DeleteUser(int id)
+        // {
+        //     var user = _repository.GetUserById(id);
+        //
+        //     if (user == null) return NotFound();
+        //
+        //     _repository.DeleteUser(user);
+        //     _repository.SaveChanges();
+        //
+        //     return NoContent();
+        // }
 
         // POST api/users/authenticate
         [HttpPost("authenticate")]
@@ -161,7 +169,7 @@ namespace Server.Api.Controllers
         {
             var authenticateResponse = _repository.Authenticate(authenticateRequest);
 
-            if (authenticateResponse == null) return BadRequest(new {message = "Username or password is incorrect"});
+            if (authenticateResponse == null) return BadRequest(new {message = "Username or password is incorrect."});
 
             return Ok(authenticateResponse);
         }
