@@ -1,0 +1,131 @@
+\documentclass[\main.tex]{subfiles}
+
+\chapter{Requisitos}
+\begin{singlespace}
+\minitoc
+\end{singlespace}
+\vspace{40pt}
+
+Para a definição dos requisitos do projeto foram definidas três prioridades possíveis que podem
+ser atribuidas a cada requisito e os respetivos pontos de realização do mesmo:
+\begin{itemize}
+    \item Alta: 8 pontos;
+    \item Média: 5 pontos;
+    \item Baixa: 2 pontos.
+\end{itemize}\par
+Estes pontos foram atribuidos com base na sequência de \textit{Fibonacci}. Analisando os pontos
+associados a cada prioridade podemos ver que a realização de um requisito com prioridade alta tem
+mais importância que a junção de um requisito de prioridade média com um de prioridade baixa.
+
+\newpage
+
+\section{Funcionais}
+\subsection*{RF\_1.1}
+\noindent\textbf{Nome:} O sistema tem de permitir o registo de um novo utilizador \par
+% \noindent\textbf{User Story:} US\_1 \par
+\noindent\noindent\textbf{Categoria:} Gestão de utilizadores \par
+\noindent\textbf{Descrição:} O registo de um novo utilizador tem de ser realizado com o
+preenchimento de alguns campos obrigatórios (email, nome de utilizador e palavra-passe). \par
+\noindent\textbf{Prioridade:} Alta \par
+
+\subsection*{RF\_1.2}
+\noindent\textbf{Nome:} O sistema tem de permitir a atualização de um utilizador \par
+\noindent\noindent\textbf{Categoria:} Gestão de utilizadores \par
+\noindent\textbf{Descrição:} A atualização de um utilizador só é permitida para utilizadores já
+registados no sistema e com o login realizado.\par
+\noindent\textbf{Prioridade:} Média \par
+
+\subsection*{RF\_1.3}
+\noindent\textbf{Nome:} O sistema tem de permitir a atualização da palavra-passe de um
+utilizador \par
+\noindent\noindent\textbf{Categoria:} Gestão de utilizadores \par
+\noindent\textbf{Descrição:} Para atualizar a palavra-passe de um utilizador tem de ser enviado
+uma hiperligação para o email do utilizador em questão com uma validade de 5 minutos.\par
+\noindent\textbf{Prioridade:} Média \par
+
+\subsection*{RF\_1.4}
+\noindent\textbf{Nome:} O sistema pode permitir a consulta da página de perfil de um
+utilizador\par
+\noindent\noindent\textbf{Categoria:} Gestão de utilizadores \par
+\noindent\textbf{Descrição:} Qualquer utilizador sem estar autenticado pode consultar a página
+de um utilizador em específico e ver as estatísticas dos jogos desse utilizador.\par
+\noindent\textbf{Prioridade:} Baixa \par
+
+\subsection*{RF\_2.1}
+\noindent\textbf{Nome:} O sistema tem permitir a autenticação de um utilizador\par
+\noindent\noindent\textbf{Categoria:} Gestão de sessões \par
+\noindent\textbf{Descrição:} O login de um utilizador registado tem de ser suportado por uma
+autenticação com \acrshort{jwt}.\par
+\noindent\textbf{Prioridade:} Alta \par
+
+\subsection*{RF\_2.2}
+\noindent\textbf{Nome:} O sistema tem permitir o logout de um utilizador\par
+\noindent\noindent\textbf{Categoria:} Gestão de sessões \par
+\noindent\textbf{Descrição:} Um utilizador autenticado tem de ter a possibilidade de sair da
+aplicação.\par
+\noindent\textbf{Prioridade:} Alta \par
+
+\subsection*{RF\_3.1}
+\noindent\textbf{Nome:} O sistema deve permitir o modo de jogo de um único jogador\par
+\noindent\noindent\textbf{Categoria:} Gestão o jogo \par
+\noindent\textbf{Descrição:} O modo de jogo \textit{single player} deve estar disponível para
+qualquer utilizador autenticado.\par
+\noindent\textbf{Prioridade:} Média \par
+
+\subsection*{RF\_3.2}
+\noindent\textbf{Nome:} O sistema tem permitir o modo de jogo multijogador\par
+\noindent\noindent\textbf{Categoria:} Gestão o jogo \par
+\noindent\textbf{Descrição:} O modo de jogo \textit{multiplayer} deve estar disponível para
+qualquer utilizador autenticado.\par
+\noindent\textbf{Prioridade:} Alta \par
+
+\subsection*{RF\_3.3}
+\noindent\textbf{Nome:} O sistema tem permitir a criação de uma sala de jogo multijogador\par
+\noindent\noindent\textbf{Categoria:} Gestão o jogo \par
+\noindent\textbf{Descrição:} Qualquer utilizador autenticado tem a possibilidade de
+criar uma sala de jogo \textit{multiplayer}. Apenas é permitido criar uma sala de jogo de cada
+vez por cada utilizador.\par
+\noindent\textbf{Prioridade:} Alta \par
+
+\subsection*{RF\_3.4}
+\noindent\textbf{Nome:} O sistema tem permitir a junção a uma sala de jogo multijogador\par
+\noindent\noindent\textbf{Categoria:} Gestão o jogo \par
+\noindent\textbf{Descrição:} Qualquer utilizador autenticado tem a possibilidade de se juntar
+a uma sala de jogo \textit{multiplayer}. Apenas é permitido juntar-se a uma sala de jogo de cada
+vez por cada utilizador.\par
+\noindent\textbf{Prioridade:} Alta \par
+
+\newpage
+
+\section{Não Funcionais}
+
+\subsection*{RNF\_1.1}
+\noindent\textbf{Nome:} A aplicação web tem de ser responsiva \par
+\noindent\noindent\textbf{Categoria:} Aplicação web \par
+\noindent\textbf{Descrição:} A aplicação web tem de ser o mais responsiva possível para que
+possa ser utilizada a partir de qualquer dispositivo, visto que não irá existir aplicação
+nativa.\par
+\noindent\textbf{Prioridade:} Alta \par
+
+\subsection*{RNF\_1.2}
+\noindent\textbf{Nome:} A aplicação web tem de ter boa usabilidade \par
+\noindent\noindent\textbf{Categoria:} Aplicação web \par
+\noindent\textbf{Descrição:} A aplicação web tem de ser muito intuitiva e amiga do
+utilizador, para que não seja difícil a adaptação à mesma.\par
+\noindent\textbf{Prioridade:} Alta \par
+
+\subsection*{RNF\_2.1}
+\noindent\textbf{Nome:} A API tem de estar fortemente documentada \par
+\noindent\noindent\textbf{Categoria:} API REST \par
+\noindent\textbf{Descrição:} A API tem de estar fortemente documentada com a utilização do
+\gls{swagger}.\par
+\noindent\textbf{Prioridade:} Alta \par
+
+\subsection*{RNF\_3.1}
+\noindent\textbf{Nome:} A \acrlong{bd} relacional tem de ser alojada num serviço cloud \par
+\noindent\noindent\textbf{Categoria:} \acrlong{bd} \par
+\noindent\textbf{Descrição:} A \acrlong{bd} relacional tem de ser alojada num serviço cloud da
+\textit{Microsoft Azure}.\par
+\noindent\textbf{Prioridade:} Alta \par
+
+\newpage
