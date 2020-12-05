@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-private-app',
@@ -6,10 +8,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./private-app.component.css'],
 })
 export class PrivateAppComponent implements OnInit {
+  user: any;
 
-  constructor() { }
+  constructor(public session: SessionService, public router: Router) {}
 
   ngOnInit(): void {
+    this.session.me().subscribe((user) => {
+      this.user = user;
+      this.startGame();
+      if (!this.user) {
+        const options = this.session.expired
+          ? { queryParams: { expired: true } }
+          : undefined;
+        this.router.navigate(['/login'], options);
+      }
+    });
+  }
+
+  startGame() {
     const canvas: any = document.querySelector('.game');
     const context: any = canvas.getContext('2d');
 
@@ -57,17 +73,21 @@ export class PrivateAppComponent implements OnInit {
 
     const keyPush = (event: any) => {
       switch (event.key) {
-        case "ArrowLeft":
-          xv = -1; yv = 0;
+        case 'ArrowLeft':
+          xv = -1;
+          yv = 0;
           break;
-        case "ArrowUp":
-          xv = 0; yv = -1;
+        case 'ArrowUp':
+          xv = 0;
+          yv = -1;
           break;
-        case "ArrowRight":
-          xv = 1; yv = 0;
+        case 'ArrowRight':
+          xv = 1;
+          yv = 0;
           break;
-        case "ArrowDown":
-          xv = 0; yv = 1;
+        case 'ArrowDown':
+          xv = 0;
+          yv = 1;
           break;
       }
     };
@@ -75,5 +95,4 @@ export class PrivateAppComponent implements OnInit {
     document.addEventListener('keydown', keyPush);
     setInterval(game, 1000 / 10);
   }
-
 }

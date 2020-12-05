@@ -28,7 +28,7 @@ export class RegisterControllerComponent implements OnInit {
     };
     this.users.createUser(user).subscribe(
       (user) => {
-        this.router.navigateByUrl('/login');
+        this.router.navigate(['/login']);
       },
       (error) => {
         this.error = error.error.message;
