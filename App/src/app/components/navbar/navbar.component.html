@@ -6,13 +6,13 @@
     <nav>
       <ul class="nav_links">
         <li>
-          <a routerLink="">Profile</a>
+          <a routerLink="" *ngIf="user">{{ user.username }}</a>
         </li>
         <!-- <li>
           <a routerLink="">About</a>
         </li> -->
       </ul>
     </nav>
-    <a class="cta" href="/login"><button>Sign out</button></a>
+    <a class="cta" (click)="logout()"><button>Sign out</button></a>
   </div>
 </header>

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +10,9 @@ import { PrivateAppComponent } from './controllers/private-app/private-app.compo
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterControllerComponent } from './controllers/register-controller/register-controller.component';
 
+import { HeaderInterceptor } from './interceptors/header.interceptor';
+import { SessionLostInterceptor } from './interceptors/session-lost.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,13 +21,19 @@ import { RegisterControllerComponent } from './controllers/register-controller/r
     NavbarComponent,
     RegisterControllerComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HeaderInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SessionLostInterceptor,
+      multi: true,
+    },
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
