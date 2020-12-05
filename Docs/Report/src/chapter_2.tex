@@ -17,15 +17,29 @@
 % \subsection{Gestão do Projeto}
 % GitLab (issue tracker e wiki's)
 
+\section{Tecnologias Utilizadas}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=8cm]{../private_assets/TechStack.png}
+\caption{Stack tecnológica do projeto}
+\end{figure}
+Na figura 2.1 está representado o grupo de tecnologias utilizadas no desenvolvimento deste projeto. 
+Para o \textit{backend} foi utilizada a versão 3.1 do  \textit{ASP.NET}, para o \textit{frontend}
+foi utilizada framework \textit{AngularJS} na sua versão 11.0.2. Para a gestão de dados da
+aplicação foi utilizada um sistema de gestão de bases de dados relacionais chamado
+\textit{Microsoft SQL Server} alojado num serviço \textit{Microsoft Azure}.
+
+\newpage
+
 \section{Applicação Web}
-Na figura 2.1 é possível analisar um diagrama de Casos de Uso relativo à aplicação web de um
+Na figura 2.2 é possível analisar um diagrama de Casos de Uso relativo à aplicação web de um
 modo geral.\par
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\linewidth]{../private_assets/UML_UseCase_WebApp.png}
 \caption{Diagrama de Casos de Uso da Web App}
 \end{figure}
-\newpage
+
 A aplicação web deve consistir numa plataforma simples e de fácil utilização, por isso a sua
 responsividade e usabilidade devem ser muito elevadas. O utilizador deve ser capaz de se
 registar e de se autenticar. Com o login realizado, deverá ser capaz de criar ou de se juntar
@@ -34,7 +48,7 @@ competitiva e aliciante. Para além disto, o utilizador poderá ser capaz de vis
 pessoal com as suas estatísticas de partidas realizadas, bem como ter a possibilidade de
 atualizar qualquer dado pessoal introduzido no registo.\par
 
-
+\newpage
 
 \section{API REST}
 Na figura 2.2 está representado um desenho concetual da arquitetura da API.\par
@@ -43,11 +57,12 @@ Na figura 2.2 está representado um desenho concetual da arquitetura da API.\par
 \includegraphics[width=\linewidth]{../private_assets/UML_APIArchitecture.png}
 \caption{Arquitetura da API REST}
 \end{figure}
+
 A \acrshort{api} será desenvolvida com a utilização do padrão \acrfull{rest}. Para iniciar,
 quando é realizado um pedido \acrshort{http} através de um cliente da \acrshort{api} (e.g., a
 nossa aplicação web), este é recebido e tratado por um \textit{Controller} que irá comunicar
 com a \acrfull{bd} do sistema através do componente \textit{DBContext}. Para que o controlador
-consiga comunicar com este componente de forma mais genérica e modularizada será desenvolvido
+consiga comunicar com este componente de forma mais genérica e modularizada foi desenvolvido
 um componente \textit{Repository}.\par
 A informação retornada pela \acrshort{bd} é estruturada pelo \textit{Model} e existirá também
 um componente \acrfull{dto} para gerir a informação que deve ser enviada na resposta, de modo a
