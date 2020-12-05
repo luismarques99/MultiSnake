@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
 
 @Component({
@@ -12,9 +12,19 @@ export class LoginControllerComponent implements OnInit {
   password: String = '';
   error: String = '';
 
-  constructor(public session: SessionService, public router: Router) {}
+  constructor(
+    public session: SessionService,
+    public router: Router,
+    public route: ActivatedRoute
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params.expired) {
+        this.error = 'Your session has expired!';
+      }
+    });
+  }
 
   onSubmit(event: any): void {
     event.preventDefault();
@@ -22,7 +32,7 @@ export class LoginControllerComponent implements OnInit {
     const user = { username: this.username, password: this.password };
     this.session.login(user).subscribe(
       (user) => {
-        this.router.navigateByUrl('/');
+        this.router.navigate(['/']);
       },
       (error) => {
         this.error = error.error.message;
