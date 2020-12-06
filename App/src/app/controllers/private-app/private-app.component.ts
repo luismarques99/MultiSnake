@@ -15,7 +15,7 @@ export class PrivateAppComponent implements OnInit {
   ngOnInit(): void {
     this.session.me().subscribe((user) => {
       this.user = user;
-      this.startGame();
+      this.game();
       if (!this.user) {
         const options = this.session.expired
           ? { queryParams: { expired: true } }
@@ -25,74 +25,149 @@ export class PrivateAppComponent implements OnInit {
     });
   }
 
-  startGame() {
+  game() {
     const canvas: any = document.querySelector('.game');
     const context: any = canvas.getContext('2d');
 
-    let px: number = 10;
-    let py: number = 10;
-    let gs: number = 20;
-    let tc: number = 20;
-    let ax: number = 15;
-    let ay: number = 15;
-    let xv: number = 0;
-    let yv: number = 0;
-    let trail: any[] = [];
-    let tail: number = 5;
+    const field: any = { gridSize: 20, tileCount: 20 };
+    let snake: Snake;
+    let apple: Apple;
+    let alive: boolean = true;
+    // let snakes: any[];
 
-    const game = () => {
-      px += xv;
-      py += yv;
+    class Apple {
+      xPos: number;
+      yPos: number;
 
-      if (px < 0) px = tc - 1;
-      if (px > tc - 1) px = 0;
+      constructor(xPos: number, yPos: number) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+      }
+    }
 
-      if (py < 0) py = tc - 1;
-      if (py > tc - 1) py = 0;
+    class Snake {
+      // id: number;
+      xPos: number;
+      yPos: number;
+      xVel: number;
+      yVel: number;
+      tail: number;
+      trail: any[];
 
-      context.fillStyle = 'black';
+      constructor(xPos: number, yPos: number) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.xVel = 0;
+        this.yVel = 0;
+        this.tail = 5;
+        this.trail = [];
+      }
+
+      eat() {
+        this.tail++;
+
+        let appleXPos = Math.floor(Math.random() * field.tileCount);
+        let appleYPos = Math.floor(Math.random() * field.tileCount);
+        while (snake.contains(appleXPos, appleYPos)) {
+          appleXPos = Math.floor(Math.random() * field.tileCount);
+          appleYPos = Math.floor(Math.random() * field.tileCount);
+        }
+        apple = new Apple(appleXPos, appleYPos);
+      }
+
+      die() {
+        this.tail = 5;
+        // alive = false;
+      }
+
+      private contains(xPos: number, yPos: number): boolean {
+        for (let i = 0; i < this.trail.length; i++) {
+          if (this.trail[i].xPos === xPos && this.trail[i].yPos === yPos)
+            return true;
+        }
+        return false;
+      }
+    }
+
+    let appleXPos = Math.floor(Math.random() * field.tileCount);
+    let appleYPos = Math.floor(Math.random() * field.tileCount);
+    apple = new Apple(appleXPos, appleYPos);
+
+    let snakeXPos = Math.floor(Math.random() * field.tileCount);
+    let snakeYPos = Math.floor(Math.random() * field.tileCount);
+    snake = new Snake(snakeXPos, snakeYPos);
+
+    function startGame() {
+      // color the field
+      context.fillStyle = '#424242';
       context.fillRect(0, 0, canvas.width, canvas.height);
 
-      context.fillStyle = 'lime';
-      for (let i = 0; i < trail.length; i++) {
-        context.fillRect(trail[i].x * gs, trail[i].y * gs, gs - 2, gs - 2);
-        if (trail[i].x == px && trail[i].y == py) tail = 5;
+      // color the apple
+      context.fillStyle = '#e00d0d';
+      context.fillRect(
+        apple.xPos * field.gridSize,
+        apple.yPos * field.gridSize,
+        field.gridSize - 2,
+        field.gridSize - 2
+      );
+
+      snake.xPos += snake.xVel;
+      snake.yPos += snake.yVel;
+
+      if (snake.xPos < 0) snake.xPos = field.tileCount - 1; // colision with left wall
+      if (snake.xPos > field.tileCount - 1) snake.xPos = 0; // colision with right wall
+      if (snake.yPos < 0) snake.yPos = field.tileCount - 1; // colision with up wall
+      if (snake.yPos > field.tileCount - 1) snake.yPos = 0; // colision with down wall
+
+      // color the snake
+      context.fillStyle = '#607917';
+      for (let i = 0; i < snake.trail.length; i++) {
+        context.fillRect(
+          snake.trail[i].xPos * field.gridSize,
+          snake.trail[i].yPos * field.gridSize,
+          field.gridSize - 2,
+          field.gridSize - 2
+        );
+
+        // colision with own body
+        if (
+          snake.trail[i].xPos === snake.xPos &&
+          snake.trail[i].yPos === snake.yPos
+        )
+          snake.die();
       }
-      trail.push({ x: px, y: py });
-      while (trail.length > tail) trail.shift();
+      snake.trail.push({ xPos: snake.xPos, yPos: snake.yPos });
+      while (snake.trail.length > snake.tail) snake.trail.shift();
 
-      if (ax == px && ay == py) {
-        tail++;
-        ax = Math.floor(Math.random() * tc);
-        ay = Math.floor(Math.random() * tc);
-      }
+      if (apple.xPos === snake.xPos && apple.yPos === snake.yPos) snake.eat();
+    }
 
-      context.fillStyle = 'red';
-      context.fillRect(ax * gs, ay * gs, gs - 2, gs - 2);
-    };
-
-    const keyPush = (event: any) => {
+    function keyPush(event: any) {
       switch (event.key) {
         case 'ArrowLeft':
-          xv = -1;
-          yv = 0;
+          if (snake.xVel === 1 && snake.yVel === 0) break;
+          snake.xVel = -1;
+          snake.yVel = 0;
           break;
         case 'ArrowUp':
-          xv = 0;
-          yv = -1;
+          if (snake.xVel === 0 && snake.yVel === 1) break;
+          snake.xVel = 0;
+          snake.yVel = -1;
           break;
         case 'ArrowRight':
-          xv = 1;
-          yv = 0;
+          if (snake.xVel === -1 && snake.yVel === 0) break;
+          snake.xVel = 1;
+          snake.yVel = 0;
           break;
         case 'ArrowDown':
-          xv = 0;
-          yv = 1;
+          if (snake.xVel === 0 && snake.yVel === -1) break;
+          snake.xVel = 0;
+          snake.yVel = 1;
           break;
       }
-    };
+    }
 
     document.addEventListener('keydown', keyPush);
-    setInterval(game, 1000 / 10);
+    setInterval(startGame, 1000 / 12);
   }
 }
