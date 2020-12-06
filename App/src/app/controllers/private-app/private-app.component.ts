@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
 
+declare const WebSocketManager: any;
+
 @Component({
   selector: 'app-private-app',
   templateUrl: './private-app.component.html',
@@ -29,11 +31,14 @@ export class PrivateAppComponent implements OnInit {
     const canvas: any = document.querySelector('.game');
     const context: any = canvas.getContext('2d');
 
+    const connection = new WebSocketManager.Connection(
+      'ws://localhost:3030/server'
+    );
+
     const field: any = { gridSize: 20, tileCount: 20 };
     let snake: Snake;
     let apple: Apple;
     let alive: boolean = true;
-    // let snakes: any[];
 
     class Apple {
       xPos: number;
@@ -46,7 +51,7 @@ export class PrivateAppComponent implements OnInit {
     }
 
     class Snake {
-      // id: number;
+      id: String;
       xPos: number;
       yPos: number;
       xVel: number;
@@ -55,6 +60,7 @@ export class PrivateAppComponent implements OnInit {
       trail: any[];
 
       constructor(xPos: number, yPos: number) {
+        this.id = '';
         this.xPos = xPos;
         this.yPos = yPos;
         this.xVel = 0;
@@ -78,6 +84,10 @@ export class PrivateAppComponent implements OnInit {
       die() {
         this.tail = 5;
         // alive = false;
+      }
+
+      setId(id: String) {
+        this.id = id;
       }
 
       private contains(xPos: number, yPos: number): boolean {
@@ -168,6 +178,24 @@ export class PrivateAppComponent implements OnInit {
     }
 
     document.addEventListener('keydown', keyPush);
+
+    connection.connectionMethods.onConnected = () => {
+      snake.setId(connection.connectionId);
+      connection.invoke('ConnectedSnake', JSON.stringify(snake));
+    };
+
+    connection.connectionMethods.onDisconnected = () => {
+      console.log('disconnected to web socket');
+    };
+
+    connection.clientMethods['pingSnakes'] = (serializedSnakes: any) => {};
+
+    connection.start();
+
+    window.onunload = function () {
+      connection.invoke('DisconnectedSnake', JSON.stringify(snake));
+    };
+
     setInterval(startGame, 1000 / 12);
   }
 }

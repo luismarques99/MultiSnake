@@ -10,6 +10,8 @@ using Newtonsoft.Json.Serialization;
 using Server.Api.Data;
 using Server.Api.Data.Users;
 using Server.Api.Helpers;
+using Server.Game;
+using WebSocketManager;
 
 namespace Server
 {
@@ -24,6 +26,8 @@ namespace Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddWebSocketManager();
+            
             services.AddCors();
 
             var apiConnectionString = Configuration.GetConnectionString("MultiSnakeAPI_Connection");
@@ -40,13 +44,16 @@ namespace Server
             services.Configure<AppSettings>(appSettingsSection);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseWebSockets();
+            app.MapWebSocketManager("/server", serviceProvider.GetService<SnakeHandler>());
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -62,6 +69,8 @@ namespace Server
             app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            GameManager.Instance.Initialize();
         }
     }
 }
