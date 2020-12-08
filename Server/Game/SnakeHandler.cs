@@ -13,20 +13,21 @@ namespace Server.Game
         {
         }
 
-        public async Task ConnectedSnake(string socketId,string serializedSnake)
+        public async Task ConnectedSnake(string serializedSnake)
         {
             var snake = JsonConvert.DeserializeObject<Snake>(serializedSnake);
-            var exists = GameManager.Instance.Snakes.ContainsKey(socketId);
+            var exists = GameManager.Instance.Snakes.ContainsKey(snake.Id);
 
             if (!exists) GameManager.Instance.Snakes.TryAdd(snake.Id, snake);
         }
 
-        public async Task DisconnectedSnake(string socketId, string serializedSnake)
+        public async Task DisconnectedSnake(string serializedSnake)
         {
-            GameManager.Instance.Snakes.TryRemove(socketId, out var removedSnake);
+            var snake = JsonConvert.DeserializeObject<Snake>(serializedSnake);
+            GameManager.Instance.Snakes.TryRemove(snake.Id, out var removedSnake);
         }
 
-        public async Task OnMove(string socketId, string serializedSnake)
+        public async Task OnMove(string serializedSnake)
         {
             var snake = JsonConvert.DeserializeObject<Snake>(serializedSnake);
             GameManager.Instance.Snakes.TryGetValue(snake.Id, out Snake exists);
@@ -38,7 +39,7 @@ namespace Server.Game
                 exists.Trail = snake.Trail;
             }
         }
-        
+
         public override async Task OnConnected(WebSocket socket)
         {
             await base.OnConnected(socket);

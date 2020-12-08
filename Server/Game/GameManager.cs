@@ -26,7 +26,7 @@ namespace Server.Game
         public void Initialize()
         {
             Snakes = new ConcurrentDictionary<string, Snake>();
-            Timer = new Timer(Callback, null, 0, 1000 / 10);
+            Timer = new Timer(Callback, null, 0, 1000 / 60);
         }
 
         private void Callback(object state)
