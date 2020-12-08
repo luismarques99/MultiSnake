@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading;
 using Newtonsoft.Json;
+using Server.Api.Helpers;
 
 namespace Server.Game
 {
@@ -25,13 +26,13 @@ namespace Server.Game
         public void Initialize()
         {
             Snakes = new ConcurrentDictionary<string, Snake>();
-            Timer = new Timer(Callback, null, 0, 1000/12);
+            Timer = new Timer(Callback, null, 0, 1000 / 10);
         }
 
         private void Callback(object state)
         {
             var listOfSnakes = JsonConvert.SerializeObject(Snakes.Values);
-            // send the snaked to the open client
+            Startup.SnakeHandler.InvokeClientMethodToAllAsync("pingSnakes", listOfSnakes).Wait();
         }
     }
 }

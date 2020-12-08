@@ -18,6 +18,7 @@ namespace Server
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        public static SnakeHandler SnakeHandler { get; set; }
 
         public Startup(IConfiguration configuration)
         {
@@ -70,6 +71,7 @@ namespace Server
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
+            SnakeHandler = serviceProvider.GetService<SnakeHandler>();
             GameManager.Instance.Initialize();
         }
     }
