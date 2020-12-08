@@ -10,6 +10,9 @@ export class NavbarComponent implements OnInit {
   @Input()
   user: any;
 
+  @Input()
+  score: any;
+
   constructor(public session: SessionService) {}
 
   ngOnInit(): void {}

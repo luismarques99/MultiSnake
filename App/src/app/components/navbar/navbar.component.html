@@ -2,7 +2,12 @@
   <a href="">
     <img class="logo" src="../../../assets/multisnake_letter_logo_no_background_ultra_cropped.png" alt="logo" />
   </a>
-  <div class="nav_left">
+  <div class="scores">
+    <!-- TODO: Terminar apresentacao dos scores -->
+    <div class="score" *ngIf="score">Score: {{ score || 0 }}</div>
+    <div class="score" *ngIf="user">High Score: {{ user.highScore || 0 }}</div>
+  </div>
+  <div class="nav_right">
     <nav>
       <ul class="nav_links">
         <li>

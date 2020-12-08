@@ -1,11 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gorditas&display=swap");
 
 header {
-  background-color: #24252a;
+  background-color: rgba(82, 82, 82, 0.8);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 5%;
+  padding: 20px 50px;
 }
 
 li,
@@ -17,14 +18,27 @@ button {
   text-decoration: none;
 }
 
-.nav_left {
+.scores {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #dddddd;
+  font-family: "Gorditas", cursive;
+  font-size: 24px;
+}
+
+.score {
+  margin: 0 5vw;
+}
+
+.nav_right {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
 .logo {
-  width: 150px;
+  width: 100px;
   height: auto;
   cursor: pointer;
   margin-right: auto;
