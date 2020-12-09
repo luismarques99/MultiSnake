@@ -11,6 +11,7 @@ namespace Server.Api.Dtos.Users
             Id = user.Id;
             Username = user.Username;
             Email = user.Email;
+            HighScore = user.HighScore;
             Token = token;
         }
     }

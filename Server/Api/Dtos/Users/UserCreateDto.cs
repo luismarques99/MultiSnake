@@ -12,5 +12,7 @@ namespace Server.Api.Dtos.Users
         
         [Required]
         public string Password { get; set; }
+        
+        public int HighScore { get; set; }
     }
 }
