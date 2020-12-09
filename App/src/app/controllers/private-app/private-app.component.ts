@@ -76,13 +76,33 @@ export class PrivateAppComponent implements OnInit {
       yTileCount: 34,
     };
 
-    let appleXPos = Math.floor(Math.random() * field.xTileCount);
-    let appleYPos = Math.floor(Math.random() * field.yTileCount);
-    let apple: Apple = new Apple(appleXPos, appleYPos, 1);
-
     const snakeXPos = Math.floor(Math.random() * field.xTileCount);
     const snakeYPos = Math.floor(Math.random() * field.yTileCount);
     let snake: Snake = new Snake(snakeXPos, snakeYPos);
+
+    const numberOfApples = 3;
+    let apples: Apple[] = [];
+
+    // instantiate the apples
+    const containsApple = (apple: Apple): boolean => {
+      for (let i = 0; i < apples.length; i++)
+        if (apple.xPos === apples[i].xPos && apple.yPos === apples[i].yPos)
+          return true;
+      return false;
+    };
+    for (let i = 0; i < numberOfApples; i++) {
+      let appleXPos = Math.floor(Math.random() * field.xTileCount);
+      let appleYPos = Math.floor(Math.random() * field.yTileCount);
+      while (
+        snake.contains(appleXPos, appleYPos) ||
+        containsApple(new Apple(appleXPos, appleYPos))
+      ) {
+        appleXPos = Math.floor(Math.random() * field.xTileCount);
+        appleYPos = Math.floor(Math.random() * field.yTileCount);
+      }
+      apples[i] = new Apple(appleXPos, appleYPos);
+    }
+    // let apple: Apple = new Apple(appleXPos, appleYPos, 1);
 
     let snakes: Snake[] = [];
 
@@ -100,6 +120,33 @@ export class PrivateAppComponent implements OnInit {
       // color the field
       context.fillStyle = '#424242';
       context.fillRect(0, 0, canvas.width, canvas.height);
+
+      // color the apples
+      for (let i = 0; i < apples.length; i++) {
+        if (apples[i].xPos === snake.xPos && apples[i].yPos === snake.yPos) {
+          snake.eat(apples[i]);
+
+          let appleXPos = Math.floor(Math.random() * field.xTileCount);
+          let appleYPos = Math.floor(Math.random() * field.yTileCount);
+          while (
+            snake.contains(appleXPos, appleYPos) ||
+            containsApple(new Apple(appleXPos, appleYPos))
+          ) {
+            appleXPos = Math.floor(Math.random() * field.xTileCount);
+            appleYPos = Math.floor(Math.random() * field.yTileCount);
+          }
+          apples[i] = new Apple(appleXPos, appleYPos);
+        }
+
+        if (apples[i].points === 5) context.fillStyle = '#edb118';
+        else context.fillStyle = '#e60b0b';
+        context.fillRect(
+          apples[i].xPos * field.gridSize,
+          apples[i].yPos * field.gridSize,
+          field.gridSize - field.gridMargin,
+          field.gridSize - field.gridMargin
+        );
+      }
 
       // color the other snakes
       snakes.forEach((other) => {
@@ -147,13 +194,13 @@ export class PrivateAppComponent implements OnInit {
       });
 
       // color the apple
-      context.fillStyle = '#e00d0d';
+      /* context.fillStyle = '#e00d0d';
       context.fillRect(
         apple.xPos * field.gridSize,
         apple.yPos * field.gridSize,
         field.gridSize - field.gridMargin,
         field.gridSize - field.gridMargin
-      );
+      ); */
 
       // color the  body
       context.fillStyle = '#759419';
@@ -205,7 +252,7 @@ export class PrivateAppComponent implements OnInit {
         this.connection.invoke('OnMove', JSON.stringify(snake));
       }
 
-      if (apple.xPos === snake.xPos && apple.yPos === snake.yPos) {
+      /* if (apple.xPos === snake.xPos && apple.yPos === snake.yPos) {
         snake.eat(apple);
 
         appleXPos = Math.floor(Math.random() * field.xTileCount);
@@ -215,7 +262,7 @@ export class PrivateAppComponent implements OnInit {
           appleYPos = Math.floor(Math.random() * field.yTileCount);
         }
         apple = new Apple(appleXPos, appleYPos, 1);
-      }
+      } */
     };
 
     const keyPush = (event: any) => {
@@ -261,6 +308,12 @@ export class PrivateAppComponent implements OnInit {
       snakes = JSON.parse(serializedSnakes);
     };
 
+    /* this.connection.clientMethods['pingApples'] = (serializedApples: any) => {
+      console.log(serializedApples);
+      apples = JSON.parse(serializedApples);
+    };
+    console.log(apples); */
+
     this.connection.start();
 
     window.onunload = () => {
@@ -279,10 +332,12 @@ class Apple {
   yPos: number;
   points: number;
 
-  constructor(xPos: number, yPos: number, points: number) {
+  constructor(xPos: number, yPos: number) {
     this.xPos = xPos;
     this.yPos = yPos;
-    this.points = points;
+
+    const goldenApple = Math.floor(Math.random() * 10);
+    this.points = goldenApple == 9 ? 5 : 1;
   }
 }
 

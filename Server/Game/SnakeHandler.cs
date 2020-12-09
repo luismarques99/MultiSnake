@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -9,6 +12,10 @@ namespace Server.Game
 {
     public class SnakeHandler : WebSocketHandler
     {
+        private readonly Random _random = new Random();
+        private ConcurrentDictionary<string, Snake> _snakes = GameManager.Instance.Snakes;
+        // private List<Apple> _apples = GameManager.Instance.Apples;
+
         public SnakeHandler(WebSocketConnectionManager webSocketConnectionManager) : base(webSocketConnectionManager)
         {
         }
@@ -69,5 +76,49 @@ namespace Server.Game
 
             await SendMessageToAllAsync(message);
         }
+
+        /*public async Task InitializeApples(int numOfApples, int fieldXTiles, int fieldYTiles)
+        {
+            for (var i = 0; i < numOfApples; i++)
+            {
+                var appleXPos = _random.Next(0, fieldXTiles);
+                var appleYPos = _random.Next(0, fieldYTiles);
+                while (ContainsApple(new Apple(appleXPos, appleYPos)))
+                {
+                    appleXPos = _random.Next(0, fieldXTiles);
+                    appleYPos = _random.Next(0, fieldYTiles);
+                }
+
+                var apple = new Apple(appleXPos, appleYPos);
+                _apples.Add(apple);
+            }
+        }
+
+        public async Task AppleEaten(string serializedApple, int fieldXTiles, int fieldYTiles)
+        {
+            var apple = JsonConvert.DeserializeObject<Apple>(serializedApple);
+            _apples.Remove(apple);    
+
+            var appleXPos = _random.Next(0, fieldXTiles);
+            var appleYPos = _random.Next(0, fieldYTiles);
+            while (ContainsApple(new Apple(appleXPos, appleYPos)))
+            {
+                appleXPos = _random.Next(0, fieldXTiles);
+                appleYPos = _random.Next(0, fieldYTiles);
+            }
+
+            var newApple = new Apple(appleXPos, appleYPos);
+            _apples.Add(newApple);
+        }
+
+        private bool ContainsApple(Apple apple)
+        {
+            foreach (var other in _apples)
+            {
+                if (apple.XPos == other.XPos && apple.YPos == other.YPos) return true;
+            }
+
+            return false;
+        }*/
     }
 }
