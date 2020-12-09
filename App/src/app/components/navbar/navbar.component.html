@@ -3,10 +3,8 @@
     <img class="logo" src="../../../assets/multisnake_letter_logo_no_background_ultra_cropped.png" alt="logo" />
   </a>
   <div class="scores">
-    <!-- TODO: Terminar apresentacao dos scores -->
     <div class="score">Score: {{ score || 0 }}</div>
-    <!-- <div class="score" *ngIf="score">Score: {{ score || 0 }}</div> -->
-    <div class="score" *ngIf="user">High Score: {{ user.highScore || 0 }}</div>
+    <div class="score">High Score: {{ highScore || 0 }}</div>
   </div>
   <div class="nav_right">
     <nav>
@@ -14,9 +12,6 @@
         <li>
           <a routerLink="" *ngIf="user">{{ user.username }}</a>
         </li>
-        <!-- <li>
-          <a routerLink="">About</a>
-        </li> -->
       </ul>
     </nav>
     <a class="cta" (click)="logout()"><button>Sign out</button></a>

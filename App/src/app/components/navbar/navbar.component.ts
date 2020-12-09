@@ -13,6 +13,9 @@ export class NavbarComponent implements OnInit {
   @Input()
   score: any;
 
+  @Input()
+  highScore: any;
+
   constructor(public session: SessionService) {}
 
   ngOnInit(): void {}

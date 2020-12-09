@@ -19,6 +19,9 @@ export class LoginControllerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.session.me().subscribe((user) => {
+      if (user) this.router.navigate(['/']);
+    });
     this.route.queryParams.subscribe((params) => {
       if (params.expired) {
         this.error = 'Your session has expired!';

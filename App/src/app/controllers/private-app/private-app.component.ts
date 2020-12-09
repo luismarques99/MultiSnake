@@ -1,6 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
+import { UsersService } from 'src/app/services/users.service';
 
 declare const WebSocketManager: any;
 
@@ -13,25 +15,25 @@ export class PrivateAppComponent implements OnInit {
   user: any;
   connection: any;
   score: number;
+  highScore: number;
 
-  constructor(public session: SessionService, public router: Router) {
+  constructor(
+    public session: SessionService,
+    public users: UsersService,
+    public router: Router
+  ) {
     this.connection = new WebSocketManager.Connection(
       'ws://localhost:3030/server'
     );
 
     this.score = 0;
+    this.highScore = 0;
   }
 
   ngOnInit(): void {
     this.session.me().subscribe((user) => {
-      console.log(user);
       this.user = user;
       if (!this.user) {
-        // this.connection.invoke(
-        //   'DisconnectedSnake',
-        //   this.connection.connectionId,
-        //   ''
-        // );
         const options = this.session.expired
           ? { queryParams: { expired: true } }
           : undefined;
@@ -39,13 +41,32 @@ export class PrivateAppComponent implements OnInit {
           window.location.reload();
         });
       } else {
+        alert(
+          'Welcome to the MultiSnake game!\nUse the arrow keys to move around. Have fun!'
+        );
+
         this.game();
       }
     });
   }
 
   game() {
-    const canvas: any = document.querySelector('.game');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.user.token}`,
+      }),
+    };
+    this.users.getUserById(this.user.id, httpOptions).subscribe(
+      (user) => {
+        this.highScore = user.highScore;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    const canvas: any = document.querySelector('.gameCanvas');
     const context: any = canvas.getContext('2d');
 
     const field: any = {
@@ -91,6 +112,29 @@ export class PrivateAppComponent implements OnInit {
               field.gridSize - field.gridMargin,
               field.gridSize - field.gridMargin
             );
+
+            // snake dies if its head colides with other snakes
+            if (
+              other.trail[i].xPos === snake.xPos &&
+              other.trail[i].yPos === snake.yPos
+            ) {
+              if (snake.score > this.highScore) {
+                this.users
+                  .partialUpdateUser(
+                    this.user.id,
+                    [
+                      {
+                        op: 'replace',
+                        path: 'highScore',
+                        value: snake.score,
+                      },
+                    ],
+                    httpOptions
+                  )
+                  .subscribe();
+              }
+              snake.die();
+            }
           }
           context.fillStyle = '#b06019';
           context.fillRect(
@@ -125,8 +169,24 @@ export class PrivateAppComponent implements OnInit {
         if (
           snake.trail[i].xPos === snake.xPos &&
           snake.trail[i].yPos === snake.yPos
-        )
+        ) {
+          if (snake.score > this.highScore) {
+            this.users
+              .partialUpdateUser(
+                this.user.id,
+                [
+                  {
+                    op: 'replace',
+                    path: 'highScore',
+                    value: snake.score,
+                  },
+                ],
+                httpOptions
+              )
+              .subscribe();
+          }
           snake.die();
+        }
       }
       snake.trail.push({ xPos: snake.xPos, yPos: snake.yPos });
       while (snake.trail.length > snake.tail) snake.trail.shift();
@@ -240,7 +300,7 @@ class Snake {
     this.id = '';
     this.xPos = xPos;
     this.yPos = yPos;
-    this.xVel = 0;
+    this.xVel = 1;
     this.yVel = 0;
     this.tail = 3;
     this.trail = [];
@@ -257,9 +317,13 @@ class Snake {
   }
 
   die() {
-    this.tail = 3;
-    this.score = 0;
-    // alive = false;
+    if (
+      window.confirm(
+        `Ups! You died! Your score was ${this.score} points.\nClick OK to restart the game.`
+      )
+    )
+      location.reload();
+    else location.reload();
   }
 
   setId(id: String) {

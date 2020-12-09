@@ -1,5 +1,7 @@
 <body>
-  <app-navbar [user]="user" [score]="score"></app-navbar>
-  <canvas class="game" width="600px" height="510px"></canvas>
+  <app-navbar [user]="user" [score]="score" [highScore]="highScore"></app-navbar>
+  <div class="game">
+    <canvas class="gameCanvas" width="600px" height="510px"></canvas>
+  </div>
 </body>
 <!-- <canvas [(ngModel)]="canvas" name="canvas" class="game"></canvas> -->
