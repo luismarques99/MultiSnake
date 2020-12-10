@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using Server.Api.Data;
 using Server.Api.Data.Users;
@@ -28,7 +29,7 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddWebSocketManager();
-            
+
             services.AddCors();
 
             var apiConnectionString = Configuration.GetConnectionString("MultiSnakeAPI_Connection");
@@ -43,6 +44,32 @@ namespace Server
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
+
+            services.AddSwaggerGen(swagger =>
+            {
+                swagger.SwaggerDoc("v1", new OpenApiInfo {Title = "MultiSnake API", Version = "v1"});
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
@@ -54,6 +81,13 @@ namespace Server
 
             app.UseWebSockets();
             app.MapWebSocketManager("/server", serviceProvider.GetService<SnakeHandler>());
+
+            app.UseSwagger();
+            app.UseSwaggerUI(swagger =>
+            {
+                swagger.SwaggerEndpoint("/swagger/v1/swagger.json", "MultiSnake API v1");
+                swagger.RoutePrefix = string.Empty;
+            });
             
             app.UseHttpsRedirection();
 
