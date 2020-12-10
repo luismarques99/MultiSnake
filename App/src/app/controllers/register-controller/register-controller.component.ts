@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
+import { SessionService } from 'src/app/services/session.service';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -14,9 +15,17 @@ export class RegisterControllerComponent implements OnInit {
   password: String = '';
   error: String = '';
 
-  constructor(public users: UsersService, public router: Router) {}
+  constructor(
+    public session: SessionService,
+    public users: UsersService,
+    public router: Router
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.session.me().subscribe((user) => {
+      if (user) this.router.navigate(['/']);
+    });
+  }
 
   onSubmit(event: any): void {
     event.preventDefault();

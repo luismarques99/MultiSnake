@@ -30,7 +30,9 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/web-socket-manager.js"
+            ]
           },
           "configurations": {
             "production": {

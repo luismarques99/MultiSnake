@@ -25,4 +25,13 @@ export class UsersService {
   createUser(newUser: User): Observable<any> {
     return this.http.post(`${API_URL}/users`, newUser, httpOptions);
   }
+
+  getUserById(id: number, options: any): Observable<any> {
+    return this.http.get(`${API_URL}/users/${id}`, options);
+  }
+
+  partialUpdateUser(id: number, body: any, options: any): Observable<any> {
+    const user = JSON.stringify(body);
+    return this.http.patch(`${API_URL}/users/${id}`, user, options);
+  }
 }
