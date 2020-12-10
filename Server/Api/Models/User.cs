@@ -16,5 +16,7 @@ namespace Server.Api.Models
         
         [Required]
         public string Password { get; set; }
+
+        public int HighScore { get; set; }
     }
 }
