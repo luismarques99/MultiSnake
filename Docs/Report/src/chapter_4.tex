@@ -1,19 +1,21 @@
 \documentclass[\main.tex]{subfiles}
 
-\chapter{Estado Atual da Aplicação}
+\chapter{Produto Final}
 \begin{singlespace}
 \minitoc
 \end{singlespace}
 \vspace{40pt}
 
-Atualmente, o componente de gestão de utilizadores da aplicação está totalmente funcional, com o registo
-e o login de utilizadores. Estão a ser corrigidos alguns precalços ocorridos no desenvolvimento da gestão
-de sessões de utilizadores, para que apenas utilizadores registados e logados no sistema possam jogar.\par
-Na figura 4.1 e 4.2 estão representados o componente de login e registo de um utilizador, respetivamente.\par
+No momento da redação deste documento, o projeto encontra-se no seu estado final. Posto isto, a aplicação
+conta com um sistema de gestão de utilizadores e sessões, ou seja, um utilizador, depois de registado, pode
+realizar o \textit{login} para que tenha acesso à sua interface de jogo com as suas informações pessoais
+(nome, resultado atual e melhor resultado obtido).\par
+Na figura 4.1 e 4.2 estão representados o componente de login e registo de um utilizador,
+respetivamente.\par
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\linewidth]{../private_assets/Login.png}
+\includegraphics[width=0.9\linewidth]{../private_assets/Login.png}
 \caption{Componente de login de utilizadores}
 \end{figure}
 
@@ -21,19 +23,36 @@ Na figura 4.1 e 4.2 estão representados o componente de login e registo de um u
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\linewidth]{../private_assets/Register.png}
+\includegraphics[width=0.9\linewidth]{../private_assets/Register.png}
 \caption{Componente de registo de utilizadores}
 \end{figure}
 
-\vspace{40pt}
-
-Em desenvolvimento está também a página pessoal de cada utilizador, dentro da qual foi realizada uma
-versão singleplayer do jogo da cobra, para servir de apoio e modelo para o desenvolvimento do modo
-multiplayer. A figura 4.3 demonstra uma fase bastante primordial da página privada do utilizador com a
-versão do jogo para um jogador.\par
+Para terminar, qualquer utilizador que se encontre neste ponto da aplicação pode disfrutar do jogo da cobra
+multi jogador. A figura 4.3 demonstra a aplicação com apenas um utilizador a jogar e com as suas
+informações no cabeçalho da página \par
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\linewidth]{../private_assets/SinglePlayer.png}
-\caption{Página privada de um utilizador com a versão singleplayer do jogo da cobra}
+\includegraphics[width=0.9\linewidth]{../private_assets/MultiPlayer1.png}
+\caption{Página privada de um utilizador com uma versão multiplayer do jogo da cobra}
 \end{figure}
+
+Como pode ser observado na imagem anterior, as maçãs podem assumir duas cores: vermelha, que significa que é
+uma maçã comum e apenas dá um ponto à cobra; amarela, que representa uma maçã "dourada" com alguma raridade
+em aparecer e resulta em cinco pontos para a cobra.\par
+
+\newpage
+
+Quando mais que um utilizador está a jogar, podem ser vistas duas cores nas cobras. A primeira é verde, que
+representa a cobra do utilizador. A segunda é laranja que representa as restantes cobras a competir com os
+restantes jogadores.\par
+Na figura 4.4 está demonstrada a utilização da aplicação por dois utilizadores diferentes, com sessão
+iniciada.\par
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\linewidth]{../private_assets/MultiPlayer2.png}
+\caption{Jogo da cobra multiplayer com dois utilizadores diferentes}
+\end{figure}
+
+\newpage
